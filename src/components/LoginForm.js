@@ -57,6 +57,7 @@ width: 326px;
 height: 46px;
 background: #A328D6;
 border-radius: 5px;
+border: none;
 p{
 font-family: 'Raleway';
 font-style: normal;
