@@ -50,7 +50,7 @@ background: #a328d6;
 border-radius: 5px;
 border: none;
 position: relative; 
-{cursor: pointer;}
+cursor: pointer;
 img{
     position: absolute;
     top: 11px;
@@ -106,7 +106,6 @@ justify-content: space-evenly;
 align-items: center;
 flex-direction: column;
 position: relative;
-
 `
 
 const Head = styled.div`
@@ -125,6 +124,6 @@ h1{
 img {
     width: 23px;
     height: 24px;
-    {cursor: pointer;}
+    cursor: pointer;
 }
 `
