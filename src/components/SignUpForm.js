@@ -32,9 +32,9 @@ export default function RegisterForm() {
                     //onChange={e => setPassword(e.target.value)}
                     required
                 />
-                <ButtonLogin type="submit">
+                <ButtonSignUp type="submit">
                     <p>{"Cadastrar"}</p>
-                </ButtonLogin>
+                </ButtonSignUp>
             </form>
         </ContainerForm>
     )
@@ -65,11 +65,12 @@ color: #000000;
 }
 `
 
-const ButtonLogin = styled.button`
+const ButtonSignUp = styled.button`
 width: 326px;
 height: 46px;
 background: #A328D6;
 border-radius: 5px;
+border: none;
 p{
 font-family: 'Raleway';
 font-style: normal;
