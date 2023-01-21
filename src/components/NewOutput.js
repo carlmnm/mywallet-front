@@ -1,11 +1,34 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import { useState, useContext } from "react"
+import Context from "./Context";
+import axios from "axios";
 
 export default function AddNewEntry() {
     const navigate = useNavigate()
+    const [value, setValue] = useState("")
+    const [description, setDescription] = useState("")
+    const {token, setToken} = useContext(Context)
 
-    function saveOutput(){
-        navigate("/home")
+    function saveOutput(e){
+        e.preventDefault()
+        const URL = "http://localhost:5001/in-and-out"
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        const body = {value, description, type: "out"}
+
+        const promise = axios.post(URL, body, config)
+
+        promise.then((res) => {
+            console.log("funcionou")
+            navigate("/home")
+        })
+        promise.catch((err) => {
+            console.log("deu errado")
+        })
     }
 
     return (
@@ -20,15 +43,15 @@ export default function AddNewEntry() {
                     <Input
                         type="number"
                         placeholder="Valor"
-                        //value={email}
-                        //onChange={e => setEmail(e.target.value)}
+                        value={value}
+                        onChange={e => setValue(e.target.value)}
                         required
                     />
                     <Input
                         type="text"
                         placeholder="Descrição"
-                        //value={password}
-                        //onChange={e => setPassword(e.target.value)}
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
                         required
                     />
                     <ButtonAdd type="submit">

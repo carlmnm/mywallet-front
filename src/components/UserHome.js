@@ -57,7 +57,7 @@ export default function HomePage() {
                             <HistoricOneLine>
                                 <h1>{`${item.day}/${item.month}`}</h1>
                                 <h2>{item.description}</h2>
-                                <h3>{item.value}</h3>
+                                <h3 className={item.type === "in" ? "in" : "out"}>{item.value}</h3>
                             </HistoricOneLine>
                         ))}
                     </ContainerHistoric>
@@ -118,8 +118,13 @@ h3{
     font-weight: 400;
     font-size: 16px;
     text-align: right;
-    color: #C70000;
     //background-color: green;
+}
+.in{
+    color: #03AC00;
+}
+.out{
+    color: #C70000;
 }
 `
 
