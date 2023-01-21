@@ -6,12 +6,19 @@ import SignUp from "./components/SignUp"
 import HomePage from "./components/UserHome"
 import NewEntry from "./components/NewEntry"
 import NewOutput from "./components/NewOutput"
+import { useState } from "react"
 
 export default function App() {
+    const tokenOnLocalStorage = localStorage.getItem("token")
+    const [token, setToken] = useState(tokenOnLocalStorage)
+
+    function setAndPersistToken(token) {
+        setToken(token)
+        localStorage.setItem("token", token)
+      }
+
     return (
-        <Context.Provider value={{
-        }}
-        >
+        <Context.Provider value={{ token, setToken, setAndPersistToken}}>
             <BrowserRouter>
                 <GlobalStyle />
                 <Routes>

@@ -3,26 +3,67 @@ import arrow from "../assets/imgs/arrow.svg"
 import novaentrada from "../assets/imgs/novaentrada.svg"
 import novasaida from "../assets/imgs/novasaida.svg"
 import { useNavigate } from "react-router-dom"
+import { useState, useContext, useEffect } from "react"
+import Context from "./Context";
+import axios from "axios"
 
 export default function HomePage() {
     const navigate = useNavigate()
+    const [entryAndOutput, setEntryAndOutput] = useState({})
+    const { token, setToken } = useContext(Context)
+    const [myName, setMyName] = useState("")
+    const [myHistoric, setMyHistoric] = useState([])
 
-    function addEntrada () {
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    useEffect(() => {
+        const signinURL = "http://localhost:5001/signin"
+
+        const promise = axios.get(signinURL, config)
+        promise.then((res) => {
+            setMyName(res.data.name)
+            console.log(res.data)
+        })
+
+        const inAndOutURL = "http://localhost:5001/in-and-out"
+
+        const historicPromise = axios.get(inAndOutURL, config)
+        historicPromise.then((res) => {
+            setMyHistoric(res.data)
+        })
+    }, [])
+
+    function addEntrada() {
         navigate("/nova-entrada")
     }
-    function addSaida () {
+    function addSaida() {
         navigate("/nova-saida")
     }
     return (
         <Container>
             <Head>
-                <h1>{"Olá, Fulano"}</h1>
+                <h1>{`Olá, ${myName}`}</h1>
                 <img src={arrow} />
             </Head>
             <Body>
-                <p>
-                    {"Não há registros de entrada ou saída"}
-                </p>
+                {myHistoric.length ?
+                    <ContainerHistoric>
+                        {myHistoric.map((item) => (
+                            <HistoricOneLine>
+                                <h1>{`${item.day}/${item.month}`}</h1>
+                                <h2>{item.description}</h2>
+                                <h3>{item.value}</h3>
+                            </HistoricOneLine>
+                        ))}
+                    </ContainerHistoric>
+                    : <p> {"Não há registros de entrada ou saída"} </p>
+                }
+
             </Body>
             <Footer>
                 <AddButton onClick={addEntrada}>
@@ -42,6 +83,54 @@ export default function HomePage() {
 }
 
 {/*styled components*/ }
+
+const HistoricOneLine = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+//flex-wrap: wrap;
+//background-color: red;
+margin-bottom: 10px;
+h1{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #C6C6C6;
+    //text-align: left;
+    //background-color: blue;
+}
+h2{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #000000;
+    text-align: left;
+    width: 100%;
+    margin-left: 25px;
+    //background-color: red;
+}
+h3{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: right;
+    color: #C70000;
+    //background-color: green;
+}
+`
+
+const ContainerHistoric = styled.div`
+display: flex;
+flex-direction: column;
+width: 306px;
+justify-content: flex-start;
+//background-color: blue;
+margin-top: 20px;
+`
 
 const AddButton = styled.button`
 width: 155px;
@@ -84,8 +173,8 @@ background: #FFFFFF;
 border-radius: 5px;
 display: flex;
 justify-content: center;
-align-items: center;
-//margin-top: 80px;
+align-items: flex-start;
+//margin-top: 10px;
 p{
     font-family: 'Raleway';
     font-style: normal;

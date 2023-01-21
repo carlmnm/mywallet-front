@@ -2,11 +2,14 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import Context from "./Context";
 
 export default function UserLogin() {
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const {token, setToken, setAndPersistToken} = useContext(Context)
 
     function login(e) {
         e.preventDefault()
@@ -16,6 +19,7 @@ export default function UserLogin() {
         const promise = axios.post(URL, body)
         promise.then((res) => {
             alert("Usuário logado com sucesso")
+            setAndPersistToken(res.data)
             navigate('/home')
         })
         promise.catch((err) => {
