@@ -1,46 +1,70 @@
+import { useState } from "react"
 import styled from "styled-components"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export default function RegisterForm() {
+    const navigate = useNavigate()
+    const [name, setName] = useState("")
+    const [CPF, setCPF] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    function signUp(e) {
+        e.preventDefault()
+        const URL = "http://localhost:5001/signup"
+        const body = { name, CPF, email, password }
+
+        const promise = axios.post(URL, body)
+        promise.then(res => {
+            console.log("deu certo")
+            alert("Usuário cadastrado com sucesso")
+            navigate('/')
+        })
+        promise.catch((err) => {
+            console.log("oxe deu errado")
+        })
+    }
     return (
-        <ContainerForm>
-            <form /*onSubmit={signUp}*/>
+        < ContainerForm >
+            <form onSubmit={signUp}>
                 <Input
                     type="text"
                     placeholder="Nome"
-                    //value={name}
-                    //onChange={e => setName(e.target.value)}
+                    value={name}
+                    onChange={e => setName(e.target.value)}
                     required
                 />
                 <Input
                     type="text"
                     placeholder="CPF"
-                    //value={cpf}
-                    //onChange={e => setCpf(e.target.value)}
+                    value={CPF}
+                    onChange={e => setCPF(e.target.value)}
                     required
                 />
                 <Input
                     type="email"
                     placeholder="E-mail"
-                    //value={email}
-                    //onChange={e => setEmail(e.target.value)}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     required
                 />
                 <Input
                     type="password"
                     placeholder="Senha"
-                    //value={password}
-                    //onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                 />
                 <ButtonSignUp type="submit">
                     <p>{"Cadastrar"}</p>
                 </ButtonSignUp>
             </form>
-        </ContainerForm>
+        </ContainerForm >
     )
 }
 
-{/*styled components*/}
+{/*styled components*/ }
 
 const ContainerForm = styled.div`
 display: flex;
@@ -56,6 +80,7 @@ background: #FFFFFF;
 border-radius: 5px;
 padding-left: 15px;
 margin-bottom: 13px;
+border: none;
 ::placeholder{
 font-family: 'Raleway';
 font-style: normal;

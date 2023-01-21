@@ -1,28 +1,43 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import axios from "axios";
 
 export default function UserLogin() {
     const navigate = useNavigate()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     function login(e) {
         e.preventDefault()
-        navigate('/home')
+        const URL = "http://localhost:5001/signin"
+        const body = {email, password}
+
+        const promise = axios.post(URL, body)
+        promise.then((res) => {
+            alert("Usuário logado com sucesso")
+            navigate('/home')
+        })
+        promise.catch((err) => {
+            console.log("vish... algo deu arrado")
+        })
     }
+
     return (
         <ContainerForm>
             <form onSubmit={login}>
                 <Input
                     type="email"
                     placeholder="E-mail"
-                    //value={email}
-                    //onChange={e => setEmail(e.target.value)}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     required
                 />
                 <Input
                     type="password"
                     placeholder="Senha"
-                    //value={password}
-                    //onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     required
                 />
                 <ButtonLogin type="submit">
@@ -50,6 +65,7 @@ background: #FFFFFF;
 border-radius: 5px;
 padding-left: 15px;
 margin-bottom: 13px;
+border: none;
 ::placeholder{
 font-family: 'Raleway';
 font-style: normal;
@@ -65,6 +81,7 @@ height: 46px;
 background: #A328D6;
 border-radius: 5px;
 border: none;
+cursor: pointer;
 p{
 font-family: 'Raleway';
 font-style: normal;
