@@ -13,7 +13,12 @@ export default function HomePage() {
     const { token, setToken } = useContext(Context)
     const [myName, setMyName] = useState("")
     const [myHistoric, setMyHistoric] = useState([])
-
+    /*const entrys = []
+    const outputs = []
+    let totalEntrys = 0
+    let totalOutputs = 0
+    const [sum, letSum] = useState(0)*/
+    const [balance, setBalance] = useState(0)
 
     const config = {
         headers: {
@@ -27,7 +32,7 @@ export default function HomePage() {
         const promise = axios.get(signinURL, config)
         promise.then((res) => {
             setMyName(res.data.name)
-            console.log(res.data)
+            //console.log(res.data)
         })
 
         const inAndOutURL = "http://localhost:5001/in-and-out"
@@ -36,7 +41,49 @@ export default function HomePage() {
         historicPromise.then((res) => {
             setMyHistoric(res.data)
         })
-    }, [])
+
+        let values = 0
+
+        myHistoric.map((item) => {
+            if (item.type === "in") {
+                return values += parseInt(item.value)
+            } else {
+                return values -= parseInt(item.value)
+            }
+        })
+
+        setBalance(values);
+
+        //populatingArray()
+        //sumingEntrysAndOutputs()
+    }, [myHistoric])
+
+    {/*function populatingArray () {
+        myHistoric.forEach(item => {
+            if (item.type === "in") {
+                entrys.push(parseInt(item.value))
+            } else {
+                outputs.push(parseInt(item.value))
+            }
+        })
+    }
+
+    function sumingEntrysAndOutputs () {
+        entrys.forEach(item => {
+            totalEntrys += item
+        })
+
+        outputs.forEach(item => {
+            totalOutputs += item
+        })
+
+        letSum(totalEntrys - totalOutputs)
+        //console.log(totalEntrys)
+        //console.log(totalOutputs)
+        console.log(entrys)
+        console.log(outputs)
+        console.log(sum)
+    }*/}
 
     function addEntrada() {
         navigate("/nova-entrada")
@@ -63,6 +110,11 @@ export default function HomePage() {
                     </ContainerHistoric>
                     : <p> {"Não há registros de entrada ou saída"} </p>
                 }
+                <Balance>
+                    <h5>{"SALDO"}</h5>
+                    <h4 className={balance >= 0 ? "in" : "out"}>{balance}</h4>
+
+                </Balance>
 
             </Body>
             <Footer>
@@ -83,6 +135,37 @@ export default function HomePage() {
 }
 
 {/*styled components*/ }
+
+const Balance = styled.div`
+position: absolute;
+bottom: 15px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-left: 10px;
+padding-right: 10px;
+h5{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 17px;
+    color: #000000;
+}
+h4{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    text-align: right;
+}
+.in{
+    color: #03AC00;
+}
+.out{
+    color: #C70000;
+}
+`
 
 const HistoricOneLine = styled.div`
 display: flex;
@@ -179,6 +262,7 @@ border-radius: 5px;
 display: flex;
 justify-content: center;
 align-items: flex-start;
+position: relative;
 //margin-top: 10px;
 p{
     font-family: 'Raleway';
