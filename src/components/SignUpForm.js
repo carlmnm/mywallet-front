@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom"
 export default function RegisterForm() {
     const navigate = useNavigate()
     const [name, setName] = useState("")
-    const [CPF, setCPF] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
 
     function signUp(e) {
         e.preventDefault()
         const URL = "http://localhost:5001/signup"
-        const body = { name, CPF, email, password }
+        const body = { name, email, password, confirmPassword }
 
         const promise = axios.post(URL, body)
         promise.then(res => {
@@ -36,13 +36,6 @@ export default function RegisterForm() {
                     required
                 />
                 <Input
-                    type="text"
-                    placeholder="CPF"
-                    value={CPF}
-                    onChange={e => setCPF(e.target.value)}
-                    required
-                />
-                <Input
                     type="email"
                     placeholder="E-mail"
                     value={email}
@@ -54,6 +47,13 @@ export default function RegisterForm() {
                     placeholder="Senha"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    required
+                />
+                <Input
+                    type="password"
+                    placeholder="Confirme sua senha"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
                     required
                 />
                 <ButtonSignUp type="submit">

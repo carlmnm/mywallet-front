@@ -46,9 +46,9 @@ export default function HomePage() {
 
         myHistoric.map((item) => {
             if (item.type === "in") {
-                return values += parseInt(item.value)
+                return values += parseFloat(item.value)
             } else {
-                return values -= parseInt(item.value)
+                return values -= parseFloat(item.value)
             }
         })
 
