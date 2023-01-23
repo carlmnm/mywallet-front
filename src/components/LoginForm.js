@@ -4,16 +4,18 @@ import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import Context from "./Context";
+//import env from "react-dotenv";
+//env.config()
 
 export default function UserLogin() {
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const {token, setToken, setAndPersistToken} = useContext(Context)
+    const {setAndPersistToken} = useContext(Context)
 
     function login(e) {
         e.preventDefault()
-        const URL = "http://localhost:5001/signin"
+        const URL = `${process.env.REACT_APP_API_URL}/signin`//"http://localhost:5001/signin"
         const body = {email, password}
 
         const promise = axios.post(URL, body)
@@ -52,7 +54,7 @@ export default function UserLogin() {
     )
 }
 
-{/*styled components*/ }
+/*styled components*/ 
 
 const ContainerForm = styled.div`
 display: flex;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ export default function RegisterForm() {
 
     function signUp(e) {
         e.preventDefault()
-        const URL = "http://localhost:5001/signup"
+        const URL = `${process.env.REACT_APP_API_URL}/signup` //"http://localhost:5001/signup"
         const body = { name, email, password, confirmPassword }
 
         const promise = axios.post(URL, body)
@@ -64,7 +64,7 @@ export default function RegisterForm() {
     )
 }
 
-{/*styled components*/ }
+/*styled components*/
 
 const ContainerForm = styled.div`
 display: flex;

@@ -8,11 +8,11 @@ export default function AddNewEntry() {
     const navigate = useNavigate()
     const [value, setValue] = useState("")
     const [description, setDescription] = useState("")
-    const {token, setToken} = useContext(Context)
+    const {token} = useContext(Context)
 
     function saveEntry(e){
         e.preventDefault()
-        const URL = "http://localhost:5001/in-and-out"
+        const URL = `${process.env.REACT_APP_API_URL}/in-and-out` //"http://localhost:5001/in-and-out"
         const config = {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -63,7 +63,7 @@ export default function AddNewEntry() {
     )
 }
 
-{/*styled components*/ }
+/*styled components*/
 
 const ButtonAdd = styled.button`
 width: 326px;
@@ -71,6 +71,7 @@ height: 46px;
 background: #A328D6;
 border-radius: 5px;
 border: none;
+cursor: pointer;
 p{
 font-family: 'Raleway';
 font-style: normal;

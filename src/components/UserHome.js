@@ -9,15 +9,9 @@ import axios from "axios"
 
 export default function HomePage() {
     const navigate = useNavigate()
-    const [entryAndOutput, setEntryAndOutput] = useState({})
-    const { token, setToken } = useContext(Context)
+    const { token } = useContext(Context)
     const [myName, setMyName] = useState("")
     const [myHistoric, setMyHistoric] = useState([])
-    /*const entrys = []
-    const outputs = []
-    let totalEntrys = 0
-    let totalOutputs = 0
-    const [sum, letSum] = useState(0)*/
     const [balance, setBalance] = useState(0)
 
     const config = {
@@ -27,15 +21,15 @@ export default function HomePage() {
     }
 
     useEffect(() => {
-        const signinURL = "http://localhost:5001/signin"
+        const signinURL = `${process.env.REACT_APP_API_URL}/signin` //"http://localhost:5001/signin"
 
         const promise = axios.get(signinURL, config)
         promise.then((res) => {
             setMyName(res.data.name)
-            //console.log(res.data)
+
         })
 
-        const inAndOutURL = "http://localhost:5001/in-and-out"
+        const inAndOutURL = `${process.env.REACT_APP_API_URL}/in-and-out` //"http://localhost:5001/in-and-out"
 
         const historicPromise = axios.get(inAndOutURL, config)
         historicPromise.then((res) => {
@@ -54,36 +48,10 @@ export default function HomePage() {
 
         setBalance(values);
 
-        //populatingArray()
-        //sumingEntrysAndOutputs()
+
     }, [myHistoric])
 
-    {/*function populatingArray () {
-        myHistoric.forEach(item => {
-            if (item.type === "in") {
-                entrys.push(parseInt(item.value))
-            } else {
-                outputs.push(parseInt(item.value))
-            }
-        })
-    }
-
-    function sumingEntrysAndOutputs () {
-        entrys.forEach(item => {
-            totalEntrys += item
-        })
-
-        outputs.forEach(item => {
-            totalOutputs += item
-        })
-
-        letSum(totalEntrys - totalOutputs)
-        //console.log(totalEntrys)
-        //console.log(totalOutputs)
-        console.log(entrys)
-        console.log(outputs)
-        console.log(sum)
-    }*/}
+    
 
     function addEntrada() {
         navigate("/nova-entrada")
@@ -91,11 +59,15 @@ export default function HomePage() {
     function addSaida() {
         navigate("/nova-saida")
     }
+    function logOut(){
+        localStorage.clear()
+        navigate("/")
+    }
     return (
         <Container>
             <Head>
                 <h1>{`Olá, ${myName}`}</h1>
-                <img src={arrow} />
+                <img src={arrow} onClick={logOut} />
             </Head>
             <Body>
                 {myHistoric.length ?
@@ -110,10 +82,9 @@ export default function HomePage() {
                     </ContainerHistoric>
                     : <p> {"Não há registros de entrada ou saída"} </p>
                 }
-                <Balance>
+                <Balance show={myHistoric.length ? "flex" : "none"}>
                     <h5>{"SALDO"}</h5>
                     <h4 className={balance >= 0 ? "in" : "out"}>{balance}</h4>
-
                 </Balance>
 
             </Body>
@@ -140,7 +111,7 @@ const Balance = styled.div`
 position: absolute;
 bottom: 15px;
 width: 100%;
-display: flex;
+display: ${(props) => props.show};//flex;
 align-items: center;
 justify-content: space-between;
 padding-left: 10px;
@@ -272,6 +243,7 @@ p{
     color: #868686;
     width: 180px;
     text-align: center;
+    margin-top: 200px;
 }
 `
 
